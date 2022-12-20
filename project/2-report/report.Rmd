@@ -1,34 +1,46 @@
 ---
-title: "test"
-author: "test"
-date: "10/3/2021"
+title: "Exploratory Analysis"
+author: "Gedvilė Orintaitė, Dovilė Petrušonytė, Komanda 'Simpsons'"
+date: "20/12/2022"
 output:
   html_document:
-    keep_md: true
+  keep_md: true
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+Užkrauname reikalingas bibliotekas
+```{r message=FALSE, warning=FALSE}
+library(tidyverse)
+library(knitr)
 ```
 
-TEST
-
-## R Markdown
-
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
-
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
-
-```{r cars}
-summary(cars)
+Užsikrauname pradinį failą
+```{r message=FALSE, warning=FALSE, cache=TRUE}
+df <- read_csv("../1-data/train_data.csv")
+summary(df)
 ```
 
-## Including Plots
-
-You can also embed plots, for example:
-
-```{r pressure, echo=FALSE}
-plot(pressure)
+Kintamųjų apžvalga:
+```{r}
+summary(df[1:9]) %>%
+  kable()
 ```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+Pradinio duomenų failo dimensijos:
+```{r message=FALSE, warning=FALSE}
+dim(df)
+```
+
+Pavaizduojame priklausomo kintamojo y pasiskirstymą duomenyse:
+
+```{r message=FALSE, warning=FALSE}
+df %>%
+  group_by(y, loan_purpose) %>%
+  summarise(n = n()) %>%
+  ggplot(aes(fill=y, y=n, x=loan_purpose)) + 
+    geom_bar(position="dodge", stat="identity") + 
+    coord_flip() +
+    scale_y_continuous(labels = scales::comma) +
+    theme_dark()
+```
+
+Iš gauto rezultato galime matyti, kad didžioji dalis paskolų yra imamos padengti kitoms skoloms. Taip pat nemažai paskolų yra naudoja namų remontui arba neįvardintoms reikmėms.

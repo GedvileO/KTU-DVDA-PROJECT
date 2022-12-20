@@ -1,0 +1,28 @@
+---
+title: "README"
+author: "Gedvilė Orintaitė, Dovilė Petrušonytė, Komada 'Simpsons'"
+date: "20/12/2022"
+output:
+  html_document:
+  keep_md: true
+---
+
+```{r message=FALSE, warning=FALSE}
+library(h2o)
+h2o.init(max_mem_size = "8G")
+```
+
+Projekto atlikimo metu buvo išbandyti random forest, deeplearning ir GBM metodai. Geriausias AUC rezultatas gautas naudojant GMB modelį.
+Šis modelis pateiktas faile 4-model ir jo pavadinimas final_grid_model_4
+
+
+Geriausias modelis išsaugotas 4-model/final_grid_model_4, jo hyperparametrai:
+```{r message=FALSE, warning=FALSE}
+model <- h2o.loadModel("C:/Users/Gedvile/Desktop/Project/KTU-DVDA-PROJECT/project/4-model/final_grid_model_4")
+model@allparameters
+```
+
+Galutiniuose spėjimų rezutatuose gauta AUC metrika buvo apie 0.82.Modelis vykdytas 30min. Treniravimo kodas išsaugotas 3-R/Gmb modelis.R
+Taip pat buvo ieškomas optimalus max_depth parametras, kurio galutinė optimali reikšmė pasirinkta 29.Parametrams parinkti buvo naudojamas 
+atsitiktinių hyper parametrų spėliojimo metodas pritaikant "Random Discrete strategiją.
+
